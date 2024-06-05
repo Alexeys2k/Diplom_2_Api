@@ -16,15 +16,15 @@ public class CreateUsersTest {
     private final static String ERROR_MESSAGE_NOT_UNIQUE = "User already exists";
     private final static String ERROR_MESSAGE_REQUIRED_FIELD = "Email, password and name are required fields";
     private Client userClient;
-    private Users user;
+    private Users User;
     private Login login;
     private String token;
     private String bearerToken;
 
     @Before
-    public void beforeCreateUserыTest(){
+    public void beforeCreateUserTest(){
         userClient = new Client();
-        user = GenUsers.getSuccessCreateUser();
+        User = GenUsers.getSuccessCreateUser();
         login = new Login();
     }
 
@@ -39,7 +39,7 @@ public class CreateUsersTest {
     @DisplayName("Check to create a unique user")
     @Description("создать уникального пользователя")
     public void createUniqueUserTest(){
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         int actualStatusCode = responseCreate.extract().statusCode();
         Boolean isUserCreated = responseCreate.extract().path("success");
         bearerToken = responseCreate.extract().path("accessToken");
@@ -47,7 +47,7 @@ public class CreateUsersTest {
         assertEquals("StatusCode is not 200", SC_OK, actualStatusCode);
         assertTrue("User is not created", isUserCreated);
 
-        ValidatableResponse responseLogin = userClient.loginUserRequest(login.from(user));
+        ValidatableResponse responseLogin = userClient.loginUserRequest(login.from(User));
         Boolean isUserlogged = responseLogin.extract().path("success");
         assertTrue("User is not login", isUserlogged);
     }
@@ -56,17 +56,17 @@ public class CreateUsersTest {
     @DisplayName("Check to create a not unique user")
     @Description("создать пользователя, который уже зарегистрирован")
     public void createNotUniqueUserTest(){
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         Boolean isUserCreated = responseCreate.extract().path("success");
         bearerToken = responseCreate.extract().path("accessToken");
         token = bearerToken.substring(7);
         assertTrue("User is not created", isUserCreated);
 
-        ValidatableResponse responseLogin = userClient.loginUserRequest(login.from(user));
+        ValidatableResponse responseLogin = userClient.loginUserRequest(login.from(User));
         Boolean isUserlogged = responseLogin.extract().path("success");
         assertTrue("User is not login", isUserlogged);
 
-        responseCreate = userClient.createUserRequest(user);
+        responseCreate = userClient.createUserRequest(User);
         int actualStatusCode = responseCreate.extract().statusCode();
         String actualMessage = responseCreate.extract().path("message");
         assertEquals("StatusCode is not 403", SC_FORBIDDEN, actualStatusCode);
@@ -77,8 +77,8 @@ public class CreateUsersTest {
     @DisplayName("Check to create a user without some required field - email")
     @Description("создать пользователя и не заполнить одно из обязательных полей (email)")
     public void createUserWithoutEmailTest(){
-        user.setEmail(null);
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        User.setEmail(null);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         int actualStatusCode = responseCreate.extract().statusCode();
         String actualMessage = responseCreate.extract().path("message");
         assertEquals("StatusCode is not 403", SC_FORBIDDEN, actualStatusCode);
@@ -89,8 +89,8 @@ public class CreateUsersTest {
     @DisplayName("Check to create a user without some required field - password")
     @Description("создать пользователя и не заполнить одно из обязательных полей (password)")
     public void createUserWithoutPasswordTest(){
-        user.setPassword(null);
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        User.setPassword(null);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         int actualStatusCode = responseCreate.extract().statusCode();
         String actualMessage = responseCreate.extract().path("message");
         assertEquals("StatusCode is not 403", SC_FORBIDDEN, actualStatusCode);
@@ -101,8 +101,8 @@ public class CreateUsersTest {
     @DisplayName("Check to create a user without some required field - name")
     @Description("создать пользователя и не заполнить одно из обязательных полей (name)")
     public void createUserWithoutNameTest(){
-        user.setName(null);
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        User.setName(null);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         int actualStatusCode = responseCreate.extract().statusCode();
         String actualMessage = responseCreate.extract().path("message");
         assertEquals("StatusCode is not 403", SC_FORBIDDEN, actualStatusCode);

@@ -16,7 +16,7 @@ import practikum.database.ListIng;
 
 public class CreateOrderTest {
     private Client userClient;
-    private Users user;
+    private Users User;
     private Login login;
     private IngredientForOrder getIngredients;
     private Orders orderClient;
@@ -26,17 +26,17 @@ public class CreateOrderTest {
     @Before
     public void beforeCreateUserTest(){
         userClient = new Client();
-        user = GenUsers.getSuccessCreateUser();
+        User = GenUsers.getSuccessCreateUser();
         login = new Login();
 
         getIngredients = new IngredientForOrder();
         orderClient = new Orders();
 
-        ValidatableResponse responseCreate = userClient.createUserRequest(user);
+        ValidatableResponse responseCreate = userClient.createUserRequest(User);
         bearerToken = responseCreate.extract().path("accessToken");
         token = bearerToken.substring(7);
 
-        userClient.loginUserRequest(login.from(user));
+        userClient.loginUserRequest(login.from(User));
     }
 
     @After
