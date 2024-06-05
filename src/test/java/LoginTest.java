@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class LoginTest {
     private Client userClient;
-    private Users User;
+    private Users user;
     private Login login;
     private String token;
     private String bearerToken;
@@ -24,10 +24,10 @@ public class LoginTest {
     @Before
     public void beforeCreateUserTest(){
         userClient = new Client();
-        User = GenUsers.getSuccessCreateUser();
+        user = GenUsers.getSuccessCreateUser();
         login = new Login();
 
-        ValidatableResponse responseCreate = userClient.createUserRequest(User);
+        ValidatableResponse responseCreate = userClient.createUserRequest(user);
         bearerToken = responseCreate.extract().path("accessToken");
         token = bearerToken.substring(7);
     }
@@ -43,7 +43,7 @@ public class LoginTest {
     @DisplayName("Check to login an existing user")
     @Description("логин под существующим пользователем")
     public void loginExistingUserTest(){
-        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(User));
+        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(user));
         int actualStatusCode = responseLogin.extract().statusCode();
         Boolean isUserlogged = responseLogin.extract().path("success");
         assertEquals("StatusCode is not 200", SC_OK, actualStatusCode);
@@ -54,8 +54,8 @@ public class LoginTest {
     @DisplayName("Check to login a user with invalid Email")
     @Description("логин с неверным логином")
     public void loginWithInvalidEmailTest(){
-        User.setEmail("7777");
-        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(User));
+        user.setEmail("7777");
+        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(user));
         int actualStatusCode = responseLogin.extract().statusCode();
         String actualMessage = responseLogin.extract().path("message");
         assertEquals("StatusCode is not 403", SC_UNAUTHORIZED, actualStatusCode);
@@ -66,8 +66,8 @@ public class LoginTest {
     @DisplayName("Check to login a user with invalid Password")
     @Description("логин с неверным паролем")
     public void loginWithInvalidPasswordTest(){
-        User.setPassword("6666");
-        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(User));
+        user.setPassword("6666");
+        ValidatableResponse responseLogin = userClient.loginUserRequest(Login.from(user));
         int actualStatusCode = responseLogin.extract().statusCode();
         String actualMessage = responseLogin.extract().path("message");
         assertEquals("StatusCode is not 403", SC_UNAUTHORIZED, actualStatusCode);
