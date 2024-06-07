@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 public class UpdateUsersTest {
     private Client userClient;
     private Users user;
-    private Login login;
     private String token;
     private String bearerToken;
     private String newEmail;
@@ -27,7 +26,6 @@ public class UpdateUsersTest {
     public void beforeCreateUserTest(){
         userClient = new Client();
         user = GenUsers.getSuccessCreateUser();
-        login = new Login();
         newEmail = GenUsers.getNewEmail();
         newPassword = GenUsers.getNewPassword();
         newName = GenUsers.getNewName();
@@ -87,7 +85,7 @@ public class UpdateUsersTest {
         assertEquals("StatusCode is not 200", SC_OK, actualStatusCode);
         assertTrue("User is not login", isUserUpdated);
 
-        ValidatableResponse responseSecondLogin = userClient.loginUserRequest(login.from(user));
+        ValidatableResponse responseSecondLogin = userClient.loginUserRequest(Login.from(user));
         Boolean isUserSecondlogged = responseSecondLogin.extract().path("success");
         assertTrue("User is not login", isUserSecondlogged);
     }

@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 public class GetOrdersTest {
     private Client userClient;
     private Users user;
-    private Login login;
     private IngredientForOrder getIngredients;
     private Orders orderClient;
     private String token;
@@ -27,7 +26,6 @@ public class GetOrdersTest {
     public void beforeCreateUserTest(){
         userClient = new Client();
         user = GenUsers.getSuccessCreateUser();
-        login = new Login();
 
         getIngredients = new IngredientForOrder();
         orderClient = new Orders();

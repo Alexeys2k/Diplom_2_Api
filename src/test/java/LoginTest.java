@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 public class LoginTest {
     private Client userClient;
     private Users user;
-    private Login login;
     private String token;
     private String bearerToken;
     private final static String ERROR_MESSAGE_INCORRECT_FIELD = "email or password are incorrect";
@@ -25,7 +24,7 @@ public class LoginTest {
     public void beforeCreateUserTest(){
         userClient = new Client();
         user = GenUsers.getSuccessCreateUser();
-        login = new Login();
+
 
         ValidatableResponse responseCreate = userClient.createUserRequest(user);
         bearerToken = responseCreate.extract().path("accessToken");

@@ -17,7 +17,6 @@ public class CreateUsersTest {
     private final static String ERROR_MESSAGE_REQUIRED_FIELD = "Email, password and name are required fields";
     private Client userClient;
     private Users user;
-    private Login login;
     private String token;
     private String bearerToken;
 
@@ -25,7 +24,7 @@ public class CreateUsersTest {
     public void beforeCreateUserTest(){
         userClient = new Client();
         user = GenUsers.getSuccessCreateUser();
-        login = new Login();
+
     }
 
     @After
